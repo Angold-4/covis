@@ -394,21 +394,23 @@ RepresentationSpacePlotMNIST.prototype.child_layout = function child_layout() {
 
 
 
-
 // ========================================
 
 var PlotDataMNIST = function PlotDataMNIST(s) {
 
+  // prototype chain: 
+  // PlotDataMNIST -> Container -> ViseElement -> Object
+
+  // # 1. Call the parent constructor, select this div
   BasicVis.Container.call(this, s); // set this.s
   // 's' stands for selector
 
   var shape = [28, 28];
   var W = parseInt(this.s.style('width'));
 
+  // # 2. Add a new div inside for scatter plot
   this.scatter = this.new_child(BasicVis.ScatterPlot);
-  // add a new div inside
   this.scatter.div.size([W*(1-3/20)*2/3, W*(1-3/20)*2/3]);
-
   // initiate scatter plot
   this.scatter
     .N(0)
@@ -416,14 +418,15 @@ var PlotDataMNIST = function PlotDataMNIST(s) {
     .enable_zoom()
     .color(function(i){return d3.hsl(360*mnist_ys[i]/10.0,0.5,0.5);});
 
+  // # 3. Add a new selection inside
   this.select = this.inner.append("select"); // append select area inside
 
   var this_ = this;
 
+  // # 4. set handle function for selection
   this.select.on("change", function() {
     this_.display(this.value); // change the value (PlotDataMNIST)
   });
-
 };
 
 PlotDataMNIST.prototype = Object.create(BasicVis.Container.prototype);

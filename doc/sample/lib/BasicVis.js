@@ -487,16 +487,16 @@ var BasicVis = new function() {
     return this;
   };
 
-
   this.ScatterPlot.prototype.render = function() {
     var data = this._data;
     var this_ = this;
     var selection = this.zoom_g.selectAll('circle')
                    .data(d3.range(data.N));
-    // selection is a big array of 2000 numbers (points)
-    console.log("selection: ", selection); 
-    this.points = selection;
 
+    // selection is a big array of 2000 numbers (points)
+    // console.log("selection: ", selection); 
+    
+    this.points = selection;
 
       var W = parseInt(this.svg.style('width'));
       var H = parseInt(this.svg.style('height'));
@@ -511,12 +511,15 @@ var BasicVis = new function() {
       .classed({'highlight' : true})
       .on('mouseover', this._data.mouseover);
     var size = data.size()/Math.pow(data.scale, 0.7);
+
+    console.log("data.size(): ", data.size());
+
     // remove old circles from svg
     selection.exit().remove(); // # of selected circle > data.N
-    console.log("selection.exit(): ", selection.exit());
+    // console.log("selection.exit(): ", selection.exit());
     // update/reset circle properties
     
-    console.log("duration: ", selection.transition().duration(200))
+    // console.log("duration: ", selection.transition().duration(200))
 
     selection.transition().duration(200)
       .attr('cx', function(d, i) { return this_.xmap(data.x(i)); })
@@ -526,7 +529,6 @@ var BasicVis = new function() {
       .attr('fill', data.color);
 
     return this;
-
   };
 
   this.ScatterPlot.prototype.N = function(val) {

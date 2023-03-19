@@ -392,12 +392,11 @@ var friendly_reps = {}; // define a global var
 
     for (var i in rep_names){
       var name = rep_names[i];
-      console.log("name ",i ,": ", name)
       var name2 = human_name(name);
-      console.log("name2 ",i ,": ", name2)
       if (name2)
         friendly_reps[name2] = mnist_reps[name];
     }
 
 })();
+
 
