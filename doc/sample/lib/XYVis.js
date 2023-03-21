@@ -65,25 +65,29 @@ XYPlot.prototype.data = function data(x, y) {
 }
 
 XYPlot.prototype.display = function display(i) {
+  /*
   console.log("this x:", this.x)
   console.log("this y:", this.y)
 
   console.log("i:", i) // key
   console.log("this x i:", this.x[i])
   console.log("this y i:", this.y[i])
+  */
 
   this.sne_x = this.x[i];
   this.sne_y = this.y[i];
 
+  /*
   console.log("this sne x:", this.sne_x)
   console.log("this sne y:", this.sne_y)
+  */
 
   var this_ = this;
 
   var ax = 1.05*d3.min(this_.sne_x), bx = 1.05*d3.max(this_.sne_x);
   var ay = 1.05*d3.min(this_.sne_y), by = 1.05*d3.max(this_.sne_y);
 
-  console.log("ax:", ax, "bx:", bx, "ay:", ay, "by:", by)
+  // console.log("ax:", ax, "bx:", bx, "ay:", ay, "by:", by)
 
   // boundary 0.05
 

@@ -454,6 +454,12 @@ var BasicVis = new function() {
     this.zoom = d3.behavior.zoom()
                   .on("zoom", function() {this_._zoomed();});
 
+    this.xrange.strfit = function(data) {
+      for (var i = 0; i < data.length; i++) {
+        data[i] = data[i].toString();
+      }
+    };
+
     this.xrange.fit = function(data) {
       var x1 = d3.min(data);
       var x2 = d3.max(data);
@@ -504,7 +510,7 @@ var BasicVis = new function() {
 
     // https://binyamin.medium.com/d3-select-selectall-data-enter-and-exit-f0e4f0d3e1d0
 
-    console.log("selection.enter(): ", selection.enter());
+    // console.log("selection.enter(): ", selection.enter());
     // create new circles on svg
     selection.enter().append('circle')
       .attr('r', 0)
@@ -512,7 +518,7 @@ var BasicVis = new function() {
       .on('mouseover', this._data.mouseover);
     var size = data.size()/Math.pow(data.scale, 0.7);
 
-    console.log("data.size(): ", data.size());
+    // console.log("data.size(): ", data.size());
 
     // remove old circles from svg
     selection.exit().remove(); // # of selected circle > data.N

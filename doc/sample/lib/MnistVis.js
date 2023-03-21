@@ -446,16 +446,20 @@ PlotDataMNIST.prototype.data = function data(val) {
 }
 
 PlotDataMNIST.prototype.display = function display(i) {
+  /*
   console.log("i:", i) // key
   console.log("this data i:", this._data[i])
   console.log("d3.range(10): ", d3.range(10))
+  */
   this.sne = this._data[i];
   var this_ = this;
+  /*
   console.log(this_.sne[0], this_.sne.length);
   console.log(this);
+  */
   var a = 1.05*d3.min(this_.sne), b = 1.05*d3.max(this_.sne);
   // boundary 0.05
-  console.log(a,b);
+  // console.log(a,b);
 
   this.scatter // update the scatter
      //.N(sne.length/2)

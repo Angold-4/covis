@@ -157,6 +157,7 @@ NetworkLayout.prototype.render = function() {
 
 //=========================
 
+// select
 function display_embed(data, div, fix_width) {
   var sne = data["vs_sne"];
   var toks = data["toks"];
