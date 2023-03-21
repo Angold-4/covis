@@ -34,7 +34,6 @@ function display_cdb(data, type, div, fix_width) {
   // default var1 and var2: col5, col6
   var var1 = col5, var2 = col6;
 
-
   var col01;
   if (type == "CDB1") {
     col01 = col1;
@@ -96,6 +95,7 @@ function display_cdb(data, type, div, fix_width) {
 
 
   console.log("length: ", Math.min(var1_values.length, var2_values.length))
+
   // init a scatter plot
   var scatter = new BasicVis.ScatterPlot(div.select(".sne"))
     .N(Math.min(var1_values.length, var2_values.length))
@@ -169,15 +169,41 @@ function display_cdb(data, type, div, fix_width) {
       div.css("margin-left", "5%")
       div.css("font-size", "90%");
       //$("<br>").appendTo(cont);
-      category_div(div, cdn); // bind the cat
-      // cdn stands for cooridnate name
+      div.cdn = cdn; // create a new property (cdn) x or y
+      category_div(div); // bind the cat
+      // cdn stands for cooridnate name (x or y)
     }
 
-    var category_div = function(div, cdn){
+    var filtering = function() {
+      // helper function (must update va1 and var2 first)
+      var1_values = [];
+      var2_values = [];
+      var1_values_tmp = data[var1];
+      var2_values_tmp = data[var2];
+      name_values_tmp = data[col01];
+      cr_values_tmp = data[col2]; // Cash Radar Points
+
+      // perform some data cleaning
+      // the empty data will not be displayed
+
+      for (var i = 0; i < var1_values_tmp.length; i++) {
+        if (var1_values_tmp[i] != "" && var2_values_tmp[i] != "" && name_values_tmp[i] != "" && cr_values_tmp[i] != "") {
+          // only all of them are not empty, then push
+          var1_values.push(var1_values_tmp[i]);
+          var2_values.push(var2_values_tmp[i]);
+          name_values.push(name_values_tmp[i]);
+          cr_values.push(cr_values_tmp[i]);
+        }
+      }
+    }
+
+    var category_div = function(div){
       // we need to know which coordinate this div is for (cdn)
 
+      /*
       var n = this_.categories.length;
       this_.categories.push("");
+      */
 
       // handle fn (change the x/y coordinate)
       catChange = function(e, ui, cdn){
@@ -190,17 +216,30 @@ function display_cdb(data, type, div, fix_width) {
         if (headers.indexOf(s) == -1 && s != "") return;
 
         // we got a valid header
+        // then set the x and y
 
-        // this_.categories[n] = headers.indexOf(s); // headers
+        // var header = headers.indexOf(s); // the index of the header
 
-        this.scatter // update the scatter
-          .N(2000)
-          .xrange([ax,bx])
-          .yrange([ay,by])
-          .x(function(i) {return this_.sne_x[i];})
-          .y(function(i) {return this_.sne_y[i];});
+        if (div.cdn == 0) {
+          var1 = s;
+          filtering();
+        } else if (div.cdn == 1) {
+          var2 = s;
+          filtering()
+        } else {
+          console.log("CDBVis.js: Unknown coordinate: " + cdn);
+          return;
+        }
 
-        this.scatter.update(); // this.layout(); this.render()
+        scatter // update the scatter
+          .N(Math.min(var1_values.length, var2_values.length))
+          .enable_zoom()
+          .xrange.fit(var1_values)
+          .yrange.fit(var2_values)
+          .x(function(i) {return var1_values[i];})
+          .y(function(i) {return var2_values[i];})
+
+        scatter.update(); // this.layout(); this.render()
 
         // setTimeout(function() {scatter.recolor();}, 0);
         //if (this_.categories.length == n + 1 && s != "")
@@ -211,8 +250,8 @@ function display_cdb(data, type, div, fix_width) {
         var term = req.term;
         var max_matches = 12;
         if (term.length == 0) {
-          var matches = cats.slice(0, max_matches);
-          if (cats.length > max_matches){
+          var matches = headers.slice(0, max_matches);
+          if (headers.length > max_matches){
             matches.push('...');
           }
         } else {
@@ -236,6 +275,7 @@ function display_cdb(data, type, div, fix_width) {
       div.autocomplete({
         delay: 1,
         source: getMatchList,
+        // bind the cdn
         select: catChange,
         change: catChange
       });
@@ -245,7 +285,7 @@ function display_cdb(data, type, div, fix_width) {
     
     // only call this when first start
     for (var j = 0; j < class_N; j++) {
-      new_cat_div(j); // init
+      new_cat_div(cdn=j); // init
     }
 
     setTimeout(function() {
@@ -256,13 +296,9 @@ function display_cdb(data, type, div, fix_width) {
 
   }
 
-
   // set the category_div_container
-  /*
   category_div_container(div.select(".legend"));
   $(".ui-autocomplete").css("font-size", "90%").css("text-align", "left");
-  */
-
 }
 
 
