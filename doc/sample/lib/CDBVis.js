@@ -2,6 +2,7 @@
 
 // customized fn for CDB data
 function display_cdb(data, type, div, fix_width) {
+
   // "type" specify whether it is CDB1 or CDB3
 
   // hard-coded local variables
@@ -93,7 +94,6 @@ function display_cdb(data, type, div, fix_width) {
   var opacity = 0.2 + 0.4*Math.pow(0.01, Math.max(1, var1_values.length - 3000)/20000.0);
   // console.log(opacity, sne.length, Math.max(1, sne.length - 3000)/20000.0);
 
-
   console.log("length: ", Math.min(var1_values.length, var2_values.length))
 
   // init a scatter plot
@@ -135,16 +135,23 @@ function display_cdb(data, type, div, fix_width) {
 
 
   // display the details whenever the mouse is scroll over it
-  /* TODO: handle tooltip (subclass)
-  this_.tooltip = new BasicVis.TextTooltip();
-  this_.tooltip._labels = toks;
+  // TODO: handle tooltip (subclass)
+
+  this_.tooltip = new BasicVis.CDBTextTooltip();
+
+  this_.tooltip._CR = cr_values;
+  this_.tooltip._name_values = name_values;
+  this_.tooltip._var1_values = var1_values;
+  this_.tooltip._var2_values = var2_values;
+  this_.tooltip._var1 = var1;
+  this_.tooltip._var2 = var2;
+
   this_.tooltip.bind(scatter.points);
   this_.tooltip.bind_move(scatter.s);
   this_.tooltip.div.style("font-size", "85%");
   if (fix_width) {
     this_.tooltip.div.style('width', W/2 + "px");
   }
-  */
 
   /*
   if (urls) {
@@ -241,6 +248,13 @@ function display_cdb(data, type, div, fix_width) {
 
         scatter.update(); // this.layout(); this.render()
 
+        this_.tooltip._CR = cr_values;
+        this_.tooltip._name_values = name_values;
+        this_.tooltip._var1_values = var1_values;
+        this_.tooltip._var2_values = var2_values;
+        this_.tooltip._var1 = var1;
+        this_.tooltip._var2 = var2;
+
         // setTimeout(function() {scatter.recolor();}, 0);
         //if (this_.categories.length == n + 1 && s != "")
         //  new_cat_div();
@@ -275,7 +289,6 @@ function display_cdb(data, type, div, fix_width) {
       div.autocomplete({
         delay: 1,
         source: getMatchList,
-        // bind the cdn
         select: catChange,
         change: catChange
       });
@@ -300,5 +313,3 @@ function display_cdb(data, type, div, fix_width) {
   category_div_container(div.select(".legend"));
   $(".ui-autocomplete").css("font-size", "90%").css("text-align", "left");
 }
-
-

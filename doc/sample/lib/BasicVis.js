@@ -802,6 +802,64 @@ var BasicVis = new function() {
     return this;
   };
 
+  // CDBTextTooltip
+  //=========================================
+
+  this.CDBTextTooltip = function CDBTextTooltip() {
+    BasicVis.Tooltip.call(this);
+    this._labels = [];
+    this._CR = [];  // Cash Radar (score)
+    this._var1 = '';
+    this._var2 = '';
+    this._name_values = '';
+    this._var1_values = [];
+    this._var2_values = [];
+    this.div
+      .style("background-color", "white")
+      .style("font-size", "130%")
+      .style("padding-left", "2px")
+      .style("padding-right", "2px")
+      .style("padding-top", "1px")
+      .style("padding-bottom", "1px")
+      .style("border", "1px solid black");
+    return this;
+  };
+
+  this.CDBTextTooltip.prototype = Object.create(this.Tooltip.prototype);
+
+  this.CDBTextTooltip.prototype.display = function display(i) {
+    console.log(i);
+
+    var CR = this._CR;
+    var var1_values = this._var1_values;
+    var var2_values = this._var2_values;
+    var name_values = this._name_values;
+    var var1 = this._var1;
+    var var2 = this._var2;
+
+    console.log(name_values);
+    console.log(var1_values);
+    console.log(var2_values);
+    console.log(CR);
+
+
+    var content = "<b>Name:</b> " + name_values[i] + " |<br/><b>" + var1 + ":</b> " + var1_values[i].toFixed(3) + " |<br/><b>" + var2 + ":</b> " + var2_values[i].toFixed(3) + " |<br/>" + "<b>CR:</b> " + CR[i].toFixed(3);
+
+    console.log(content);
+    console.log("CR length: " + CR.length, "var1 length: " + var1_values.length, "var2 length: " + var2_values.lengt)
+
+    this.div.html(content);
+
+    /* TODO: fix NaN, and undefined length
+    if (i < var1_values.length && var1_values.length == var2_values.length && var2_values.length == CR.length) {
+      this.div.html(content)
+    } else {
+      this.div.html("");
+    }
+    */
+    return this;
+  };
+
   // GraphPlot3
   // ==================================
 

@@ -194,9 +194,9 @@ print("CDB1_data['headers'] = new Array(", sep='', end='')
 print(*headers_1, sep=', ', end='')
 print(");")
 
-print("CDB1_data[", col1_, "] = new Array([", sep='', end='')
+print("CDB1_data[", col1_, "] = new Array(", sep='', end='')
 print(*col1_data_1, sep=', ', end='')
-print("]);")
+print(");")
 
 print("CDB1_data[", col2_, "] = new Float32Array([", sep='', end='')
 print(*col2_data_1, sep=', ', end='')
@@ -277,9 +277,9 @@ print("CDB3_data['headers'] = new Array(", sep='', end='')
 print(*headers_3, sep=', ', end='')
 print(");")
     
-print("CDB3_data[", col0_, "] = new Array([", sep='', end='')
+print("CDB3_data[", col0_, "] = new Array(", sep='', end='')
 print(*col1_data_3, sep=', ', end='')
-print("]);")
+print(");")
 
 print("CDB3_data[", col2_, "] = new Float32Array([", sep='', end='')
 print(*col2_data_3, sep=', ', end='')
