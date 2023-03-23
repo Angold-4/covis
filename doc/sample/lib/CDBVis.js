@@ -177,6 +177,7 @@ function display_cdb(data, type, div, fix_width) {
       div.css("font-size", "90%");
       //$("<br>").appendTo(cont);
       div.cdn = cdn; // create a new property (cdn) x or y
+      // div is the input box
       category_div(div); // bind the cat
       // cdn stands for cooridnate name (x or y)
     }
@@ -213,7 +214,7 @@ function display_cdb(data, type, div, fix_width) {
       */
 
       // handle fn (change the x/y coordinate)
-      catChange = function(e, ui, cdn){
+      catChange = function(e, ui){
         if (ui && ui.item && ui.item.value) {
           var s = ui.item.value || this.value;
         } else {
@@ -254,15 +255,12 @@ function display_cdb(data, type, div, fix_width) {
         this_.tooltip._var2_values = var2_values;
         this_.tooltip._var1 = var1;
         this_.tooltip._var2 = var2;
-
-        // setTimeout(function() {scatter.recolor();}, 0);
-        //if (this_.categories.length == n + 1 && s != "")
-        //  new_cat_div();
       }
 
       var getMatchList = function(req, resp) {
         var term = req.term;
-        var max_matches = 12;
+        var max_matches = 12; // TODO: change this magic number (after all data is ready)
+        console.log(term)
         if (term.length == 0) {
           var matches = headers.slice(0, max_matches);
           if (headers.length > max_matches){
@@ -287,11 +285,36 @@ function display_cdb(data, type, div, fix_width) {
       }
 
       div.autocomplete({
-        delay: 1,
+        delay: 0,
+        minLength: 0,
         source: getMatchList,
         select: catChange,
         change: catChange
       });
+
+      div.tooltip({
+        classes: {
+          "ui-tooltip": "ui-state-highlight"
+        }
+      });
+
+      var button = $("<a>")
+        .attr("title", "Show All Items")
+        // append without a newline
+        .appendTo(div.parent())
+        .button({
+          icons: {
+            primary: "ui-icon-triangle-1-s"
+          },
+          text: false
+        })
+        .removeClass("ui-corner-all")
+        .addClass("ui-corner-right ui-button-icon")
+        .on("click", function() {
+            div.focus();
+            // displaying all results by passing empty string
+            div.autocomplete("search", "");
+        });
 
       div.change(catChange);
     }
